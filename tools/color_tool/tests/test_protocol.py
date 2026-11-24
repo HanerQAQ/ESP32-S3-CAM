@@ -285,7 +285,8 @@ class TestColorPresets:
     def test_recognition_panel_preset_integration(self):
         import os
         os.environ["QT_QPA_PLATFORM"] = "offscreen"
-        from PySide6.QtWidgets import QApplication
+        QtWidgets = pytest.importorskip("PySide6.QtWidgets")
+        QApplication = QtWidgets.QApplication
         _app = QApplication.instance() or QApplication([])
         from vision_control.models import UiState
         from vision_control.widgets.recognition_panel import RightRecognitionPanel

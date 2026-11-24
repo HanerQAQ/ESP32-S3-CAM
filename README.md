@@ -7,7 +7,6 @@
 **Compact Edge AI Vision & 2.4 GHz Wi-Fi Streaming Module**
 
 [![CI](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/ci.yml/badge.svg)](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/ci.yml)
-[![Release](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/release.yml/badge.svg)](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/release.yml)
 [![ESP-IDF](https://img.shields.io/badge/ESP--IDF-v6.1-E7352C?logo=espressif&logoColor=white)](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32s3/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](examples/python_sdk/)
@@ -20,7 +19,7 @@
 
 ## 1. Overview & Product Line Comparison
 
-**ESP32-S3-CAM** is an ultra-compact (`42 × 27 × 19 mm` stacked Core + Carrier assembly) offline AI vision and wireless video streaming module built around the **ESP32-S3** dual-core Xtensa LX7 MCU (`240 MHz`, AI vector instructions, `8 MB` Octal PSRAM, `16 MB` Flash) and a **GC2145 2MP** camera sensor with an onboard CH340 USB-to-UART bridge.
+**ESP32-S3-CAM** is an ultra-compact (`42 × 27 × 19 mm` stacked Core + Carrier assembly) offline AI vision and wireless video streaming module built around the **ESP32-S3** dual-core Xtensa LX7 MCU (`240 MHz`, AI vector instructions, `8 MB` Octal PSRAM, `8 MB` Flash) and a **GC2145 2MP** camera sensor with an onboard CH340 USB-to-UART bridge.
 
 As the compact **twin sibling** of [**ESP32-P4C5-CAM**](https://github.com/HanerQAQ/ESP32-P4C5-CAM), both repositories share a unified directory structure, a consistent `0xAA 0x55` 32-byte fragmented I²C vision protocol, cross-platform host SDKs (`Arduino`, `MicroPython`, `STM32 HAL`, `Raspberry Pi`, `Jetson Orin`), and the `ColorTool` HSV calibration desktop studio:
 
@@ -44,14 +43,14 @@ As the compact **twin sibling** of [**ESP32-P4C5-CAM**](https://github.com/Haner
 
 | Component | Specification |
 | :--- | :--- |
-| **Compute & Memory** | ESP32-S3-N16R8 Dual-Core LX7 @ `240 MHz`, `8 MB` Octal PSRAM, `16 MB` Flash |
+| **Compute & Memory** | ESP32-S3-N8R8 Dual-Core LX7 @ `240 MHz`, `8 MB` Octal PSRAM, `8 MB` SPI Flash |
 | **Image Sensor** | `GC2145` 2MP CMOS sensor via DVP (`XCLK = 20 MHz`, SCCB `SDA=GPIO4`, `SCL=GPIO5`) |
 | **USB Debug & Flash** | Onboard Type-C receptacle via CH340 USB-UART bridge (`GPIO43 TXD0`, `GPIO44 RXD0`) |
 | **I²C Host Bus (`0x52`)** | `5264-4P` keyed connector (`5V`, `GND`, `SCL=GPIO48`, `SDA=GPIO47`, `3.3V` TTL) |
 | **Controls & LED** | `BOOT` (`GPIO0` active low; 1s hold in STA firmware resets Wi-Fi), `RST`, Status LED (`GPIO2`) |
 | **Power Requirements** | **`DC 5.0 V ≥ 2.0 A`** (shared `GND` with host controller mandatory for I²C signal integrity) |
 
-- **Hardware Documentation**: [Assembly & Lens Focus Guide](docs/hardware_guide_en.md) | [Schematics & Datasheets](hardware/README.md) | [`SCH_S3-Cam_V1.0.pdf`](hardware/SCH_S3-Cam_V1.0.pdf)
+- **Hardware Documentation**: [Assembly & Lens Focus Guide](docs/hardware_guide_en.md) | [Schematics & Datasheets](hardware/README.md) | [Mechanical Dimensions SVG](hardware/mechanical_dimensions.svg) | [`SCH_S3-Cam_V1.0.pdf`](hardware/SCH_S3-Cam_V1.0.pdf)
 
 ---
 
@@ -85,7 +84,7 @@ All 7 source projects live in [`firmware/`](firmware/README.md) and compile into
 
 ### 4.1 Build Firmware from Source (`ESP-IDF v6.1`)
 
-Activate your **ESP-IDF v6.1** shell environment, then build a single project or batch-export all 7 merged binaries:
+Activate your **ESP-IDF v6.1** shell environment with the `xtensa-esp-elf` (`esp32s3`) toolchain installed, then build a single project or batch-export all 7 merged binaries:
 
 ```bash
 # Batch build all 7 firmware projects & generate 0x0 merged binaries in prebuilt_firmware/
@@ -101,7 +100,7 @@ idf.py -p COMx flash monitor
 
 ### 4.2 One-Click Flash Prebuilt Binaries (`0x0`)
 
-Download `.bin` releases from **[GitHub Releases](https://github.com/HanerQAQ/ESP32-S3-CAM/releases)** (or build locally) into `prebuilt_firmware/`, then flash at offset `0x0`:
+Generate `0x0`-offset merged `.bin` images locally via `firmware/build_and_verify_all.py` (or download release assets from **[GitHub Releases](https://github.com/HanerQAQ/ESP32-S3-CAM/releases)** when published) into `prebuilt_firmware/`, then flash at offset `0x0`:
 
 ```bash
 # Interactive launcher (Windows: flash.bat | Linux/macOS: ./flash.sh)

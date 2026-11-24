@@ -7,7 +7,6 @@
 **紧凑型离线 AI 视觉识别与 2.4 GHz Wi-Fi 图传模组**
 
 [![CI](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/ci.yml/badge.svg)](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/ci.yml)
-[![Release](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/release.yml/badge.svg)](https://github.com/HanerQAQ/ESP32-S3-CAM/actions/workflows/release.yml)
 [![ESP-IDF](https://img.shields.io/badge/ESP--IDF-v6.1-E7352C?logo=espressif&logoColor=white)](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32s3/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](examples/python_sdk/)
@@ -20,7 +19,7 @@
 
 ## 1. 产品概述与双系列对比
 
-**ESP32-S3-CAM** 是一款超紧凑型（`42 × 27 × 19 mm` 核心板 + 扩展底板双层堆叠结构）端侧 AI 视觉识别与无线视频图传模组。模块核心采用乐鑫 **ESP32-S3** 双核 Xtensa LX7 处理器（`240 MHz`、支持 AI 向量加速指令、集成 `8 MB` Octal PSRAM 与 `16 MB` Flash），搭配 **GC2145 200 万像素**摄像头传感器，扩展底板集成 CH340 USB 转串口芯片、防呆 I²C 扩展接口与双安装孔，即插即用。
+**ESP32-S3-CAM** 是一款超紧凑型（`42 × 27 × 19 mm` 核心板 + 扩展底板双层堆叠结构）端侧 AI 视觉识别与无线视频图传模组。模块核心采用乐鑫 **ESP32-S3** 双核 Xtensa LX7 处理器（`240 MHz`、支持 AI 向量加速指令、集成 `8 MB` Octal PSRAM 与 `8 MB` Flash），搭配 **GC2145 200 万像素**摄像头传感器，扩展底板集成 CH340 USB 转串口芯片、防呆 I²C 扩展接口与双安装孔，即插即用。
 
 作为与 [**ESP32-P4C5-CAM**](https://github.com/HanerQAQ/ESP32-P4C5-CAM) 一脉相承的**孪生系列**产品，两套仓库采用统一的目录规范、`0xAA 0x55` 32 字节分片 I²C 视觉协议、全平台主控 SDK（`Arduino`、`MicroPython`、`STM32 HAL`、`Raspberry Pi`、`Jetson Orin`）以及 `ColorTool` HSV 颜色阈值上位机调参工具：
 
@@ -44,14 +43,14 @@
 
 | 硬件单元 | 规格参数说明 |
 | :--- | :--- |
-| **主控与存储** | ESP32-S3-N16R8 双核 LX7 @ `240 MHz`，`8 MB` Octal PSRAM，`16 MB` Flash |
+| **主控与存储** | ESP32-S3-N8R8 双核 LX7 @ `240 MHz`，`8 MB` Octal PSRAM，`8 MB` SPI Flash |
 | **图像传感器** | `GC2145` 200 万像素 CMOS（DVP 接口，`XCLK=20 MHz`，SCCB `SDA=GPIO4`, `SCL=GPIO5`） |
 | **USB 烧录调试** | 板载 Type-C 接口，内置 CH340 USB-UART 桥接芯片（`GPIO43 TXD0`、`GPIO44 RXD0`） |
 | **I²C 通信接口 (`0x52`)** | `5264-4P` 防呆端子（`5V`、`GND`、`SCL=GPIO48`、`SDA=GPIO47`，`3.3V` 电平） |
 | **按键与指示灯** | `BOOT`（`GPIO0` 低电平有效；STA 固件下长按 1 秒重新配网）、`RST` 复位键、蓝色状态灯（`GPIO2`） |
 | **供电要求** | **`DC 5.0 V ≥ 2.0 A`**；I²C 通信时**必须与外部主控共地 (`GND`)** |
 
-- **硬件资料文档**：[硬件装配与调焦指南](docs/hardware_guide_zh.md) | [原理图与引脚索引](hardware/README.md) | [`SCH_S3-Cam_V1.0.pdf`](hardware/SCH_S3-Cam_V1.0.pdf)
+- **硬件资料文档**：[硬件装配与调焦指南](docs/hardware_guide_zh.md) | [原理图与引脚索引](hardware/README.md) | [结构尺寸图 SVG](hardware/mechanical_dimensions.svg) | [`SCH_S3-Cam_V1.0.pdf`](hardware/SCH_S3-Cam_V1.0.pdf)
 
 ---
 
@@ -85,7 +84,7 @@
 
 ### 4.1 从源码编译（`ESP-IDF v6.1`）
 
-激活 **ESP-IDF v6.1** 命令行环境后，支持单工程编译或一键批量编译全部 7 个工程：
+激活 **ESP-IDF v6.1** 命令行环境（需包含 `xtensa-esp-elf` 工具链以支持 `esp32s3` 目标），即可单工程编译或一键批量编译全部 7 个工程：
 
 ```bash
 # 一键批量编译全部 7 个工程并导出 0x0 合并固件至 prebuilt_firmware/
@@ -101,7 +100,7 @@ idf.py -p COMx flash monitor
 
 ### 4.2 一键烧录合并固件（`0x0`）
 
-从 **[GitHub Releases](https://github.com/HanerQAQ/ESP32-S3-CAM/releases)** 下载（或本地编译导出）合并固件至 `prebuilt_firmware/` 后，从 `0x0` 地址烧录：
+通过 `firmware/build_and_verify_all.py` 本地生成 `0x0` 合并固件（或待发布后从 **[GitHub Releases](https://github.com/HanerQAQ/ESP32-S3-CAM/releases)** 下载）放入 `prebuilt_firmware/` 后，从 `0x0` 地址烧录：
 
 ```bash
 # 使用跨平台交互烧录工具（Windows 可双击 flash.bat，Linux/macOS 可运行 ./flash.sh）

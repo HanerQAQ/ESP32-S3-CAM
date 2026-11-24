@@ -39,12 +39,11 @@ This folder provides Arduino-compatible C++ drivers and 6 functional examples fo
 
 ### Option 2: PlatformIO Command-Line Build / PlatformIO 一键构建
 
-This directory includes a pre-configured [`platformio.ini`](platformio.ini). You can compile and flash without Arduino IDE:
+This directory includes a pre-configured [`platformio.ini`](platformio.ini) pointing `src_dir` to `ESP32_S3_CAM/examples/01_cat_dog_detect` (update `src_dir` to target `02` ~ `06`):
 
 ```bash
-# Build a specific demo environment
+# Build the default example (01_cat_dog_detect)
 pio run -e cat_dog_detect
-pio run -e color_detect
 
 # Build and flash directly to connected ESP32
 pio run -e cat_dog_detect -t upload
