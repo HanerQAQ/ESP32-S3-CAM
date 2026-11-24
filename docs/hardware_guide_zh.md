@@ -1,6 +1,6 @@
-# ESP32-S3 CAM 硬件装配与镜头调焦指南
+# ESP32-S3-CAM 硬件装配与镜头调焦指南
 
-[ [English](hardware_guide_en.md) | [中文说明](hardware_guide_zh.md) ]
+[English](hardware_guide_en.md) | **简体中文**
 
 本指南详细介绍 **ESP32-S3-CAM** 视觉模块的硬件安装规范、GC2145 摄像头调焦技巧、供电要点与长时间运行散热建议。
 
@@ -27,7 +27,7 @@
 
 1. 烧录图传固件：
    ```bash
-   python tools/flash_firmware.py --bin Image_transmission_function_AP.bin
+   python tools/flash_firmware.py --bin prebuilt_firmware/Image_transmission_function_AP.bin
    ```
 2. 模块上电后，手机或电脑连接 Wi-Fi 热点 `ESP32-S3-CAM-WIFI`（无密码）。
 3. 打开浏览器访问 `http://192.168.4.1:81/stream` 查看低延迟实时画面。

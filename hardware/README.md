@@ -48,4 +48,4 @@ This folder contains lightweight PDF technical references for the **ESP32-S3-CAM
 | **Operating Voltage / 工作电压** | `DC 5.0 V` (`4.75 ~ 5.25 V`) | Recommended supply current `≥ 2.0 A` |
 | **Operating Temperature / 工作温度** | `-20 °C ~ +70 °C` | Storage: `-40 °C ~ +125 °C` (`< 90% RH`) |
 
-> **3D CAD Models (`.stp` / `.stl`)**: To avoid bloating Git history (~69 MB total), 3D mechanical CAD files (`ESP32S3-Cam.stp` and `ESP32–Cam电路板.stl`) are omitted here and can be attached to **GitHub Releases**.
+> **3D CAD Models (`.stp` / `.stl`)**: To avoid bloating Git history (~69 MB total), raw 3D STEP / STL mechanical CAD models are omitted here and can be attached to **GitHub Releases**.

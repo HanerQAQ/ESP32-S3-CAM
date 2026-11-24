@@ -1,6 +1,6 @@
-# ESP32-S3 CAM Hardware Assembly & Lens Tuning Guide
+# ESP32-S3-CAM Hardware Assembly & Lens Tuning Guide
 
-[ [English](hardware_guide_en.md) | [中文说明](hardware_guide_zh.md) ]
+**English** | [简体中文](hardware_guide_zh.md)
 
 This guide provides practical assembly, optical focusing, and thermal management instructions for the **ESP32-S3-CAM** vision module.
 
@@ -27,7 +27,7 @@ The onboard GalaxyCore GC2145 2.0 MP camera module features an adjustable thread
 
 1. Flash the AP Video Streaming firmware:
    ```bash
-   python tools/flash_firmware.py --bin Image_transmission_function_AP.bin
+   python tools/flash_firmware.py --bin prebuilt_firmware/Image_transmission_function_AP.bin
    ```
 2. Power the module and connect your smartphone or laptop to Wi-Fi SSID `ESP32-S3-CAM-WIFI`.
 3. Open `http://192.168.4.1:81/stream` in your browser to view the real-time MJPEG live stream.
@@ -41,7 +41,7 @@ The onboard GalaxyCore GC2145 2.0 MP camera module features an adjustable thread
 
 ## 2. 24-Pin FPC Camera Ribbon Cable Insertion
 
-The camera connects to the carrier board via a 24-pin 0.5mm pitch FPC flip-lock connector:
+The camera connects to the core board via a 24-pin 0.5mm pitch FPC flip-lock connector:
 
 1. **Open the Flip Lock**: Using a fingernail or non-conductive plastic pry tool, gently flip the brown locking bar upward by 90°. **Do not use excessive force**; the hinge is delicate.
 2. **Orient the Cable**: Ensure the exposed gold contact fingers on the flexible ribbon face **downward** toward the PCB circuit traces.
