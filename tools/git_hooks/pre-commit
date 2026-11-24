@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Git pre-commit hook to verify repository hygiene before committing.
+# To install: cp tools/git_hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+
+echo "Running pre-commit repository hygiene checks..."
+
+# Check 1: Forbidden file extensions
+FORBIDDEN_EXTS="\.exe$|\.pyc$|\.o$|\.obj$"
+STAGED_FORBIDDEN=$(git diff --cached --name-only | grep -E "$FORBIDDEN_EXTS")
+
+if [ -n "$STAGED_FORBIDDEN" ]; then
+    echo "[ERROR] Forbidden binary or build cache files staged for commit:"
+    echo "$STAGED_FORBIDDEN"
+    echo "Please unstage with 'git reset HEAD <file>' and check .gitignore."
+    exit 1
+fi
+
+# Check 2: Large files (> 50 MB)
+MAX_BYTES=52428800
+for file in $(git diff --cached --name-only); do
+    if [ -f "$file" ]; then
+        FILE_SIZE=$(wc -c < "$file")
+        if [ "$FILE_SIZE" -gt "$MAX_BYTES" ]; then
+            SIZE_MB=$((FILE_SIZE / 1048576))
+            echo "[ERROR] File exceeds 50 MB limit ($SIZE_MB MB): $file"
+            echo "GitHub warns on >50MB and rejects >100MB files. Use GitHub Releases for large binaries."
+            exit 1
+        fi
+    fi
+done
+
+echo "[OK] Pre-commit hygiene checks passed."
+exit 0

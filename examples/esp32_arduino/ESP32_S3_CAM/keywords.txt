@@ -1,0 +1,42 @@
+#######################################
+# Syntax Coloring Map For ESP32_S3_CAM
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+esp32_s3_cam_handle_t	KEYWORD1
+esp32_s3_cam_err_t	KEYWORD1
+esp32_s3_cam_cat_dog_result_t	KEYWORD1
+esp32_s3_cam_color_detect_result_t	KEYWORD1
+esp32_s3_cam_face_detect_result_t	KEYWORD1
+esp32_s3_cam_face_rec_result_t	KEYWORD1
+esp32_s3_cam_qrcode_result_t	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+esp32_s3_cam_init	KEYWORD2
+esp32_s3_cam_get_reg	KEYWORD2
+esp32_s3_cam_set_reg	KEYWORD2
+esp32_s3_cam_get_cat_dog_result	KEYWORD2
+esp32_s3_cam_get_color_detect_result	KEYWORD2
+esp32_s3_cam_get_face_detect_result	KEYWORD2
+esp32_s3_cam_get_face_rec_result	KEYWORD2
+esp32_s3_cam_get_qrcode_result	KEYWORD2
+esp32_s3_cam_register_face	KEYWORD2
+esp32_s3_cam_delete_face	KEYWORD2
+esp32_s3_cam_set_camera_hmirror	KEYWORD2
+esp32_s3_cam_set_camera_vflip	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+ESP32_S3_CAM_OK	LITERAL1
+ESP32_S3_CAM_ERR_FAIL	LITERAL1
+ESP32_S3_CAM_ERR_TIMEOUT	LITERAL1
+ESP32_S3_CAM_ERR_INVALID_ARG	LITERAL1
+ESP32_S3_CAM_ERR_CHECKSUM	LITERAL1

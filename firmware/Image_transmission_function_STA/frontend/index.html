@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESP32-S3 - Image Transmission STA Mode(图像回传STA模式)</title>
+<script>
+if(window.location.pathname==="/cam"||window.location.pathname==="/cam/"){
+  window.history.replaceState({}, "", "/");
+}
+</script>
+<script type="module" crossorigin src="/assets/index.js"></script>
+<link rel="stylesheet" crossorigin href="/assets/index.css">
+<style>
+#mode-bar{padding:12px 20px;background:#18232e;color:#fff;font:15px system-ui, -apple-system, sans-serif;display:flex;justify-content:space-between;align-items:center;box-sizing:border-box}
+.tag-overlay{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.wifi-link{color:#90caf9;text-decoration:none;font-size:13px;padding:3px 12px;border:1px solid rgba(144,202,249,0.45);border-radius:4px;transition:0.2s;display:inline-flex;align-items:center;gap:4px}
+.wifi-link:hover{background:rgba(144,202,249,0.18);border-color:#90caf9}
+</style>
+</head>
+<body>
+<div id="mode-bar" role="status">
+  <span id="mode-title">Image Transmission STA Mode(图像回传STA模式)</span>
+  <a href="/wifi" class="wifi-link" title="前往 Wi-Fi 配网页面">📶 Wi-Fi 配置</a>
+</div>
+<div id="app"></div>
+<script>
+const modeBar=document.querySelector('#mode-bar');
+const modeTitle=document.querySelector('#mode-title')||modeBar;
+let clearTimer;
+
+const MODE_MAP={
+  cat:'小猫检测模式（Cat Detection Mode）',
+  dog:'小狗检测模式（Dog Detection Mode）',
+  human_face:'人脸检测模式（Human Face Detection Mode）',
+  pedestrian:'行人检测模式（Pedestrian Detection Mode）',
+  coco:'目标检测模式（COCO Object Detection Mode）',
+  coco_pose:'人体姿态识别模式（Pose Estimation Mode）',
+  hand_gesture:'手势识别模式（Gesture Recognition Mode）',
+  color:'颜色识别模式（Color Detection Mode）',
+  qrcode:'二维码识别模式（QR Code Recognition Mode）',
+  apriltag:'AprilTag 识别模式（AprilTag Recognition Mode）',
+  factory:'出厂测试模式（Factory Test Mode）',
+  image_transmission:'Image Transmission STA Mode(图像回传STA模式)'
+};
+
+function getModeName(data){
+  if(!data)return 'Image Transmission STA Mode(图像回传STA模式)';
+  if(data.type&&MODE_MAP[data.type])return MODE_MAP[data.type];
+  if(data.title){
+    if(data.title.includes('Image Transmission') || data.title.includes('图像回传') || data.title.includes('STA Mode')) {
+      return 'Image Transmission STA Mode(图像回传STA模式)';
+    }
+    const t=data.title.toLowerCase();
+    if(t.includes('cat'))return MODE_MAP.cat;
+    if(t.includes('dog'))return MODE_MAP.dog;
+    if(t.includes('face'))return MODE_MAP.human_face;
+    if(t.includes('pedestrian'))return MODE_MAP.pedestrian;
+    if(t.includes('pose'))return MODE_MAP.coco_pose;
+    if(t.includes('coco')||t.includes('object'))return MODE_MAP.coco;
+    if(t.includes('gesture'))return MODE_MAP.hand_gesture;
+    if(t.includes('color'))return MODE_MAP.color;
+    if(t.includes('qr'))return MODE_MAP.qrcode;
+    if(t.includes('apriltag'))return MODE_MAP.apriltag;
+    if(t.includes('factory'))return MODE_MAP.factory;
+    return 'Image Transmission STA Mode(图像回传STA模式)';
+  }
+  if(data.tags!==undefined)return '出厂测试模式（Factory Test Mode）';
+  return 'Image Transmission STA Mode(图像回传STA模式)';
+}
+
+function clearBoxes(){document.querySelectorAll('.tag-overlay').forEach(el=>el.remove());}
+
+function showDetections(data){
+  modeTitle.textContent=getModeName(data);
+  clearTimeout(clearTimer);
+  clearBoxes();
+  if(!data.enabled||data.age_ms<0||data.age_ms>2000)return;
+  const items=data.tags||data.objects;
+  if(!items||!items.length)return;
+  const host=document.querySelector('#cam-0-v-img');
+  if(!host)return;
+  host.style.position='relative';
+  const vw=data.width||320;
+  const vh=data.height||240;
+  const sx=1.0, fs=vw/320.0;
+  const sy=1.0;
+  const ns='http://www.w3.org/2000/svg';
+  const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('class','tag-overlay');
+  svg.setAttribute('viewBox','0 0 '+vw+' '+vh);
+  svg.setAttribute('preserveAspectRatio','none');
+  for(const item of items){
+    if(item.corners&&Array.isArray(item.corners)){
+      const pts=item.corners.map(p=>[p[0]*sx, p[1]*sy]);
+      const box=document.createElementNS(ns,'polygon');
+      box.setAttribute('points',pts.map(p=>p.join(',')).join(' '));
+      box.setAttribute('fill','none');box.setAttribute('stroke','#35f29a');
+      box.setAttribute('stroke-width','3');box.setAttribute('vector-effect','non-scaling-stroke');
+      svg.appendChild(box);
+      const label=document.createElementNS(ns,'text');
+      label.setAttribute('x',Math.max(4,Math.min(...pts.map(p=>p[0]))));
+      label.setAttribute('y',Math.max(22,Math.min(...pts.map(p=>p[1]))-6));
+      label.setAttribute('fill','#35f29a');label.setAttribute('stroke','#000');
+      label.setAttribute('stroke-width','3');label.setAttribute('paint-order','stroke');
+      label.setAttribute('font-size',String(Math.round(22*fs)));
+      label.setAttribute('font-weight','bold');
+      let text=(item.id!==undefined?('ID '+item.id):(item.text||item.label||''));
+      label.textContent=text;
+      svg.appendChild(label);
+    }else if(item.box&&Array.isArray(item.box)&&item.box.length===4){
+      const x=item.box[0]*sx;
+      const y=item.box[1]*sy;
+      const w=item.box[2]*sx;
+      const h=item.box[3]*sy;
+      let color=item.color||'#35f29a';
+      const COLOR_PALETTE={'red':'#ff0000','yellow':'#ffff00','green':'#00ff00','blue':'#0000ff','purple':'#ff00ff'};
+      const labelKey=(item.label||'').toLowerCase().trim();
+      if(COLOR_PALETTE[labelKey])color=COLOR_PALETTE[labelKey];
+
+      const box=document.createElementNS(ns,'rect');
+      box.setAttribute('x',x);box.setAttribute('y',y);
+      box.setAttribute('width',w);box.setAttribute('height',h);
+      box.setAttribute('fill','none');box.setAttribute('stroke',color);
+      box.setAttribute('stroke-width','3');box.setAttribute('vector-effect','non-scaling-stroke');
+      svg.appendChild(box);
+      const label=document.createElementNS(ns,'text');
+      label.setAttribute('x',Math.max(4,x+5));
+      label.setAttribute('y',Math.max(22,y+20));
+      label.setAttribute('fill',color);label.setAttribute('stroke','#000');
+      label.setAttribute('stroke-width','2');label.setAttribute('paint-order','stroke');
+      label.setAttribute('font-size',String(Math.round(20*fs)));
+      label.setAttribute('font-weight','bold');
+      let text=item.label||item.category_name||(item.id!==undefined?('ID '+item.id):(item.text||''));
+      if(item.score!==undefined&&item.score>0&&!COLOR_PALETTE[labelKey])text+=' '+(item.score*100).toFixed(0)+'%';
+      label.textContent=text;
+      svg.appendChild(label);
+    }
+    if(item.keypoints&&Array.isArray(item.keypoints)){
+      const kps=item.keypoints.map(kp=>(Array.isArray(kp)&&kp.length>=2)?[kp[0]*sx, kp[1]*sy]:kp);
+      const SKELETON_PAIRS=[
+        [0,1],[0,2],[1,3],[2,4],
+        [5,6],[5,7],[7,9],[6,8],[8,10],
+        [5,11],[6,12],[11,12],
+        [11,13],[13,15],[12,14],[14,16]
+      ];
+      if(kps.length===17){
+        for(const [i1,i2] of SKELETON_PAIRS){
+          if(kps[i1]&&kps[i2]&&kps[i1][0]>0&&kps[i2][0]>0){
+            const bone=document.createElementNS(ns,'line');
+            bone.setAttribute('x1',kps[i1][0]);bone.setAttribute('y1',kps[i1][1]);
+            bone.setAttribute('x2',kps[i2][0]);bone.setAttribute('y2',kps[i2][1]);
+            bone.setAttribute('stroke','#35f29a');bone.setAttribute('stroke-width','2');
+            svg.appendChild(bone);
+          }
+        }
+      }
+      for(const kp of kps){
+        if(Array.isArray(kp)&&kp.length>=2&&kp[0]>0&&kp[1]>0){
+          const c=document.createElementNS(ns,'circle');
+          c.setAttribute('cx',kp[0]);c.setAttribute('cy',kp[1]);
+          c.setAttribute('r',String(Math.round(3*fs)));
+          c.setAttribute('fill','#35f29a');
+          c.setAttribute('stroke','#000');c.setAttribute('stroke-width','1');
+          svg.appendChild(c);
+        }
+      }
+    }
+    if(item.line&&item.line.length===4){
+      const line=document.createElementNS(ns,'line');
+      line.setAttribute('x1',item.line[0]*sx);line.setAttribute('y1',item.line[1]*sy);
+      line.setAttribute('x2',item.line[2]*sx);line.setAttribute('y2',item.line[3]*sy);
+      line.setAttribute('stroke','#35f29a');line.setAttribute('stroke-width','4');
+      svg.appendChild(line);
+    }
+  }
+  host.appendChild(svg);
+  clearTimer=setTimeout(clearBoxes,Math.max(0,2000-(data.age_ms||0)));
+}
+
+async function updateMode(){
+  try{
+    const response=await fetch('/api/detections',{cache:'no-store',signal:AbortSignal.timeout(2000)});
+    if(!response.ok)throw Error(response.status);
+    showDetections(await response.json());
+  }catch(e){
+    clearBoxes();
+  }
+  setTimeout(updateMode,250);
+}
+updateMode();
+</script>
+</body>
+</html>

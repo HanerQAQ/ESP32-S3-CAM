@@ -1,0 +1,31 @@
+ESP32-S3-CAM Open-Source Project
+Copyright (c) 2026 HanerQAQ (https://github.com/HanerQAQ/ESP32-S3-CAM)
+
+This project incorporates open-source components from the following third-party projects:
+
+1. Espressif ESP-IDF, ESP-DL, and ESP-Code-Scanner
+   Copyright (c) Espressif Systems (Shanghai) CO LTD
+   Licensed under the Apache License, Version 2.0 / MIT License.
+   https://github.com/espressif/esp-idf
+   https://github.com/espressif/esp-dl
+
+2. Espressif esp32-camera & esp-protocols mDNS
+   Copyright (c) Espressif Systems (Shanghai) CO LTD
+   Licensed under the Apache License, Version 2.0.
+   https://github.com/espressif/esp32-camera
+   https://github.com/espressif/esp-protocols
+
+3. cJSON
+   Copyright (c) 2009-2017 Dave Gamble and cJSON contributors.
+   Licensed under the MIT License.
+   https://github.com/DaveGamble/cJSON
+
+4. PySide6 / Qt for Python (used in tools/color_tool)
+   Copyright (c) The Qt Company Ltd.
+   Licensed under the GNU Lesser General Public License (LGPL) version 3.
+   https://www.qt.io
+
+5. OpenCV (Open Source Computer Vision Library)
+   Copyright (c) Intel Corporation, Willow Garage Inc., OpenCV Foundation.
+   Licensed under the Apache License, Version 2.0.
+   https://opencv.org

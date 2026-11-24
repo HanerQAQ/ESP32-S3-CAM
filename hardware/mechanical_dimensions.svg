@@ -1,0 +1,326 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 770" width="1120" height="770">
+  <defs>
+    <pattern id="grid-minor" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1e293b" stroke-width="0.6"/>
+    </pattern>
+    <pattern id="grid-major" width="100" height="100" patternUnits="userSpaceOnUse">
+      <rect width="100" height="100" fill="url(#grid-minor)"/>
+      <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#334155" stroke-width="1.0"/>
+    </pattern>
+    <marker id="arr-cyan-s" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 8 2 L 2 5 L 8 8 Z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arr-cyan-e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 2 2 L 8 5 L 2 8 Z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arr-amber-s" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 8 2 L 2 5 L 8 8 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arr-amber-e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 2 2 L 8 5 L 2 8 Z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <!-- Blueprint Background -->
+  <rect width="100%" height="100%" fill="#0f172a"/>
+  <rect width="100%" height="100%" fill="url(#grid-major)"/>
+  <rect x="18" y="16" width="1084" height="738" fill="none" stroke="#475569" stroke-width="1.5" rx="8"/>
+
+  <!-- Header Title Block -->
+  <text x="38" y="47" fill="#f8fafc" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="0.8">ESP32-S3-CAM — MECHANICAL DIMENSIONS &amp; STACKED LAYOUT</text>
+  <text x="38" y="67" fill="#94a3b8" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5">Two-Board Stacked Assembly (Core Camera Module + Carrier Board)  |  Uniform Scale: 10 px = 1.0 mm  |  Unit: mm (Ref. Tol. &#x00B1;0.3 mm)</text>
+  <line x1="18" y1="80" x2="1102" y2="80" stroke="#334155" stroke-width="1.2"/>
+
+  <!-- Section Dividers -->
+  <line x1="695" y1="80" x2="695" y2="754" stroke="#334155" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="18" y1="494" x2="695" y2="494" stroke="#334155" stroke-width="1" stroke-dasharray="5,4"/>
+
+  <!-- ==================== VIEW 1: CARRIER BOARD (TOP VIEW) ==================== -->
+  <text x="38" y="102" fill="#e2e8f0" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700">1. CARRIER BOARD — TOP VIEW</text>
+
+  <!-- Carrier PCB Body -->
+  <path d="M 131.0 160.0 L 519.0 160.0 Q 525.0 160.0 525.0 166.0 L 525.0 424.0 Q 525.0 430.0 519.0 430.0 L 131.0 430.0 Q 125.0 430.0 125.0 424.0 L 125.0 349.0 L 133.0 343.0 L 133.0 247.0 L 125.0 241.0 L 125.0 166.0 Q 125.0 160.0 131.0 160.0 Z" fill="#1c2128" stroke="#2dd4bf" stroke-width="2.2"/>
+
+  <!-- USB Type-C Receptacle (Left Edge, Centered) -->
+  <rect x="117.0" y="250.0" width="84" height="90" rx="5" fill="#94a3b8" stroke="#e2e8f0" stroke-width="1.6"/>
+  <rect x="117.0" y="262.0" width="18" height="66" rx="2" fill="#475569"/>
+  <line x1="151.0" y1="250.0" x2="151.0" y2="340.0" stroke="#64748b" stroke-width="1"/>
+  <text x="163.0" y="299.0" fill="#0f172a" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="700" text-anchor="middle">USB-C</text>
+
+  <!-- 2x8P Female Header Sockets -->
+  <g>
+    <rect x="152.0" y="167.7" width="207.8" height="26" rx="2.5" fill="#111827" stroke="#94a3b8" stroke-width="1.3"/>
+    <rect x="160.5" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="164.8" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="185.9" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="190.2" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="211.3" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="215.6" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="236.7" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="241.0" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="262.1" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="266.4" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="287.5" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="291.8" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="312.9" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="317.2" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="338.3" y="174.2" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="342.6" y="178.5" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="152.0" y="396.3" width="207.8" height="26" rx="2.5" fill="#111827" stroke="#94a3b8" stroke-width="1.3"/>
+    <rect x="160.5" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="164.8" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="185.9" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="190.2" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="211.3" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="215.6" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="236.7" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="241.0" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="262.1" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="266.4" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="287.5" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="291.8" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="312.9" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="317.2" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+    <rect x="338.3" y="402.8" width="13" height="13" rx="1.5" fill="#020617" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="342.6" y="407.1" width="4.4" height="4.4" fill="#fbbf24"/>
+  </g>
+  <text x="255.9" y="206.7" fill="#94a3b8" font-family="'Segoe UI', sans-serif" font-size="9.5" text-anchor="middle">2&#x00D7;8P Female Headers (2.54 mm Pitch)</text>
+
+  <!-- Board-Specific Center ICs & Power LED -->
+  <g>
+    
+    <!-- CH340 USB-UART Bridge & 3.3V LDO (ESP32-S3 Carrier) -->
+    <rect x="291.0" y="271.0" width="44" height="48" rx="2.5" fill="#0f172a" stroke="#64748b" stroke-width="1.2"/>
+    <text x="313.0" y="298.0" fill="#94a3b8" font-family="monospace" font-size="8.5" text-anchor="middle">CH340</text>
+    <rect x="237.0" y="212.0" width="32" height="22" rx="2" fill="#0f172a" stroke="#64748b" stroke-width="1"/>
+    <text x="253.0" y="226.0" fill="#64748b" font-family="monospace" font-size="7.5" text-anchor="middle">LDO</text>
+    
+    
+  </g>
+
+  <!-- Side-Actuated Tactile Push Buttons (Top: RST, Bottom: BOOT/IO0) -->
+  <g>
+    <!-- Top RST button -->
+    <rect x="427.0" y="157.0" width="46.0" height="26.0" rx="2.5" fill="#334155" stroke="#cbd5e1" stroke-width="1.2"/>
+    <rect x="439.0" y="145.0" width="22" height="12" rx="2" fill="#dc2626" stroke="#fca5a5" stroke-width="1"/>
+    <text x="450.0" y="174.0" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="8.5" font-weight="700" text-anchor="middle">RST</text>
+    <!-- Bottom BOOT/USER button -->
+    <rect x="427.0" y="407.0" width="46.0" height="26.0" rx="2.5" fill="#334155" stroke="#cbd5e1" stroke-width="1.2"/>
+    <rect x="439.0" y="433.0" width="22" height="12" rx="2" fill="#2563eb" stroke="#93c5fd" stroke-width="1"/>
+    <text x="450.0" y="423.0" fill="#f8fafc" font-family="'Segoe UI', sans-serif" font-size="8" font-weight="700" text-anchor="middle">BOOT</text>
+  </g>
+
+  <!-- 2x Vertical Mounting Holes (Ø 4.0 mm, 8.0 mm pitch, 10.0 mm from right PCB edge) -->
+  <g>
+    <circle cx="425.0" cy="255.0" r="20.0" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+    <circle cx="425.0" cy="335.0" r="20.0" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+    <!-- Crosshairs -->
+    <path d="M 399.0 255.0 L 451.0 255.0 M 425.0 229.0 L 425.0 281.0" stroke="#94a3b8" stroke-width="0.9"/>
+    <path d="M 399.0 335.0 L 451.0 335.0 M 425.0 309.0 L 425.0 361.0" stroke="#94a3b8" stroke-width="0.9"/>
+    <!-- Internal 8.0 mm hole pitch callout -->
+    <line x1="391.0" y1="259.0" x2="391.0" y2="331.0" stroke="#f59e0b" stroke-width="1.2" marker-start="url(#arr-amber-s)" marker-end="url(#arr-amber-e)"/>
+    <line x1="387.0" y1="255.0" x2="403.0" y2="255.0" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="2,2"/>
+    <line x1="387.0" y1="335.0" x2="403.0" y2="335.0" stroke="#f59e0b" stroke-width="0.8" stroke-dasharray="2,2"/>
+    <rect x="363.0" y="286.0" width="46" height="18" rx="3" fill="#0f172a" stroke="#f59e0b" stroke-width="0.9"/>
+    <text x="386.0" y="299.0" fill="#f59e0b" font-family="Consolas, monospace" font-size="10" font-weight="700" text-anchor="middle">8.0 mm</text>
+  </g>
+
+  <!-- 4-Pin Keyed IIC Connector (5264-4P, Right Edge) -->
+  <g>
+    <rect x="465.0" y="220.0" width="80.0" height="150.0" rx="3" fill="#e2e8f0" stroke="#f59e0b" stroke-width="1.8"/>
+    <rect x="523.0" y="230.0" width="22" height="130.0" fill="#cbd5e1"/>
+    <text x="495.0" y="299.0" fill="#0f172a" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="700" text-anchor="middle" transform="rotate(-90, 495.0, 295.0)">5264-4P IIC</text>
+    <circle cx="462.0" cy="257.5" r="3" fill="#fbbf24"/>
+    <line x1="455.0" y1="257.5" x2="465.0" y2="257.5" stroke="#cbd5e1" stroke-width="2.2"/>
+    <text x="555.0" y="261.0" fill="#fef08a" font-family="Consolas, monospace" font-size="10">1: 5V</text>
+    <circle cx="462.0" cy="282.5" r="3" fill="#fbbf24"/>
+    <line x1="455.0" y1="282.5" x2="465.0" y2="282.5" stroke="#cbd5e1" stroke-width="2.2"/>
+    <text x="555.0" y="286.0" fill="#fef08a" font-family="Consolas, monospace" font-size="10">2: GND</text>
+    <circle cx="462.0" cy="307.5" r="3" fill="#fbbf24"/>
+    <line x1="455.0" y1="307.5" x2="465.0" y2="307.5" stroke="#cbd5e1" stroke-width="2.2"/>
+    <text x="555.0" y="311.0" fill="#fef08a" font-family="Consolas, monospace" font-size="10">3: SCL (IO48)</text>
+    <circle cx="462.0" cy="332.5" r="3" fill="#fbbf24"/>
+    <line x1="455.0" y1="332.5" x2="465.0" y2="332.5" stroke="#cbd5e1" stroke-width="2.2"/>
+    <text x="555.0" y="336.0" fill="#fef08a" font-family="Consolas, monospace" font-size="10">4: SDA (IO47)</text>
+  </g>
+  <text x="555.0" y="214.0" fill="#f59e0b" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="700">IIC (0x52)</text>
+
+  <!-- Mounting Hole Ø 4.0 mm Callout Leader (routed cleanly below IIC housing) -->
+  <polyline points="435.0,353.0 455.0,386.0 555.0,386.0" fill="none" stroke="#38bdf8" stroke-width="1"/>
+  <circle cx="435.0" cy="353.0" r="2" fill="#38bdf8"/>
+  <text x="559.0" y="389.0" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="700">2&#x00D7; &#x2300;4.0 mm Holes</text>
+  <text x="559.0" y="402.0" fill="#94a3b8" font-family="'Segoe UI', sans-serif" font-size="9">(8.0 mm Pitch)</text>
+
+  <!-- View 1 Engineering Dimension Lines -->
+  <line x1="125.0" y1="160.0" x2="125.0" y2="109.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="545.0" y1="220.0" x2="545.0" y2="109.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="129.0" y1="114.0" x2="541.0" y2="114.0" stroke="#38bdf8" stroke-width="1.3" marker-start="url(#arr-cyan-s)" marker-end="url(#arr-cyan-e)"/>
+  <rect x="276.0" y="105.0" width="118.0" height="18" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="0.9"/>
+  <text x="335.0" y="118.0" fill="#38bdf8" font-family="'Segoe UI', Consolas, sans-serif" font-size="11" font-weight="700" text-anchor="middle">42.0 mm (Overall)</text>
+  <line x1="125.0" y1="160.0" x2="125.0" y2="132.0" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="525.0" y1="160.0" x2="525.0" y2="132.0" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="129.0" y1="137.0" x2="521.0" y2="137.0" stroke="#f59e0b" stroke-width="1.3" marker-start="url(#arr-amber-s)" marker-end="url(#arr-amber-e)"/>
+  <rect x="277.0" y="128.0" width="96.0" height="18" rx="3" fill="#0f172a" stroke="#f59e0b" stroke-width="0.9"/>
+  <text x="325.0" y="141.0" fill="#f59e0b" font-family="'Segoe UI', Consolas, sans-serif" font-size="10" font-weight="700" text-anchor="middle">40.0 mm (PCB)</text>
+  <line x1="125.0" y1="160.0" x2="51.0" y2="160.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="125.0" y1="430.0" x2="51.0" y2="430.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="56.0" y1="164.0" x2="56.0" y2="426.0" stroke="#38bdf8" stroke-width="1.3" marker-start="url(#arr-cyan-s)" marker-end="url(#arr-cyan-e)"/>
+  <g transform="translate(56.0, 295.0) rotate(-90)"><rect x="-32.0" y="-9" width="64.0" height="18" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="0.9"/><text x="0" y="4" fill="#38bdf8" font-family="'Segoe UI', Consolas, sans-serif" font-size="11" font-weight="700" text-anchor="middle">27.0 mm</text></g>
+  <line x1="152.0" y1="180.7" x2="85.0" y2="180.7" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="152.0" y1="409.3" x2="85.0" y2="409.3" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="90.0" y1="184.7" x2="90.0" y2="405.3" stroke="#f59e0b" stroke-width="1.3" marker-start="url(#arr-amber-s)" marker-end="url(#arr-amber-e)"/>
+  <g transform="translate(90.0, 295.0) rotate(-90)"><rect x="-34.0" y="-9" width="68.0" height="18" rx="3" fill="#0f172a" stroke="#f59e0b" stroke-width="0.9"/><text x="0" y="4" fill="#f59e0b" font-family="'Segoe UI', Consolas, sans-serif" font-size="10" font-weight="700" text-anchor="middle">22.86 mm</text></g>
+  <line x1="167.0" y1="422.3" x2="167.0" y2="471.0" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="344.8" y1="422.3" x2="344.8" y2="471.0" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="171.0" y1="466.0" x2="340.8" y2="466.0" stroke="#f59e0b" stroke-width="1.3" marker-start="url(#arr-amber-s)" marker-end="url(#arr-amber-e)"/>
+  <rect x="194.9" y="457.0" width="122.0" height="18" rx="3" fill="#0f172a" stroke="#f59e0b" stroke-width="0.9"/>
+  <text x="255.9" y="470.0" fill="#f59e0b" font-family="'Segoe UI', Consolas, sans-serif" font-size="10" font-weight="700" text-anchor="middle">17.78 mm (7&#x00D7;2.54)</text>
+  <line x1="425.0" y1="357.0" x2="425.0" y2="471.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="525.0" y1="430.0" x2="525.0" y2="471.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="429.0" y1="466.0" x2="521.0" y2="466.0" stroke="#38bdf8" stroke-width="1.3" marker-start="url(#arr-cyan-s)" marker-end="url(#arr-cyan-e)"/>
+  <rect x="443.0" y="457.0" width="64.0" height="18" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="0.9"/>
+  <text x="475.0" y="470.0" fill="#38bdf8" font-family="'Segoe UI', Consolas, sans-serif" font-size="10" font-weight="700" text-anchor="middle">10.0 mm</text>
+
+  <!-- ==================== VIEW 2: CORE CAMERA MODULE (FRONT VIEW) ==================== -->
+  <text x="716" y="102" fill="#e2e8f0" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700">2. CORE CAMERA MODULE — FRONT VIEW</text>
+
+  <!-- Core PCB Body (27.0 x 40.0 mm) -->
+  <rect x="770.0" y="145.0" width="270.0" height="400.0" rx="6" fill="#1c2128" stroke="#2dd4bf" stroke-width="2.2"/>
+
+  <!-- Core 2x8P Header Pads -->
+  <g>
+    <rect x="784.7" y="181.0" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="184.5" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="181.0" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="184.5" width="5" height="5" fill="#0f172a"/>
+    <rect x="784.7" y="206.4" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="209.9" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="206.4" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="209.9" width="5" height="5" fill="#0f172a"/>
+    <rect x="784.7" y="231.8" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="235.3" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="231.8" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="235.3" width="5" height="5" fill="#0f172a"/>
+    <rect x="784.7" y="257.2" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="260.7" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="257.2" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="260.7" width="5" height="5" fill="#0f172a"/>
+    <rect x="784.7" y="282.6" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="286.1" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="282.6" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="286.1" width="5" height="5" fill="#0f172a"/>
+    <rect x="784.7" y="308.0" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="311.5" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="308.0" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="311.5" width="5" height="5" fill="#0f172a"/>
+    <rect x="784.7" y="333.4" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="336.9" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="333.4" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="336.9" width="5" height="5" fill="#0f172a"/>
+    <rect x="784.7" y="358.8" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="788.2" y="362.3" width="5" height="5" fill="#0f172a"/>
+    <rect x="1013.3" y="358.8" width="12" height="12" rx="2.5" fill="#cbd5e1" stroke="#64748b" stroke-width="0.9"/>
+    <rect x="1016.8" y="362.3" width="5" height="5" fill="#0f172a"/>
+  </g>
+
+  <!-- Camera Ribbon Cable & 24-Pin 0.5mm FPC Connector -->
+  <rect x="869.0" y="268.0" width="72" height="101.0" fill="#b45309" opacity="0.92" stroke="#d97706" stroke-width="1"/>
+  <rect x="814.0" y="357.0" width="182.0" height="80.0" rx="3" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="826.0" y="361.0" width="158.0" height="18" rx="1.5" fill="#334155"/>
+  <text x="905.0" y="409.0" fill="#0f172a" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="700" text-anchor="middle">24-Pin 0.5mm FPC (DVP)</text>
+
+  <!-- GC2145 2MP Camera Sensor Module & Lens Barrel -->
+  <rect x="862.5" y="189.5" width="85.0" height="85.0" rx="4" fill="#111827" stroke="#94a3b8" stroke-width="1.5"/>
+  <circle cx="905.0" cy="232.0" r="34" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+  <circle cx="905.0" cy="232.0" r="22" fill="#0f172a" stroke="#0ea5e9" stroke-width="1.4"/>
+  <circle cx="905.0" cy="232.0" r="10" fill="#0284c7"/>
+  <circle cx="902.0" cy="229.0" r="3" fill="#bae6fd" opacity="0.8"/>
+  <text x="905.0" y="515.0" fill="#cbd5e1" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">GC2145 2MP Sensor</text>
+  <text x="905.0" y="531.0" fill="#94a3b8" font-family="'Segoe UI', sans-serif" font-size="9.5" text-anchor="middle">Back Side: ESP32-S3 (N16R8)</text>
+
+  <!-- View 2 Engineering Dimension Lines -->
+  <line x1="770.0" y1="145.0" x2="770.0" y2="109.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="1040.0" y1="145.0" x2="1040.0" y2="109.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="774.0" y1="114.0" x2="1036.0" y2="114.0" stroke="#38bdf8" stroke-width="1.3" marker-start="url(#arr-cyan-s)" marker-end="url(#arr-cyan-e)"/>
+  <rect x="873.0" y="105.0" width="64.0" height="18" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="0.9"/>
+  <text x="905.0" y="118.0" fill="#38bdf8" font-family="'Segoe UI', Consolas, sans-serif" font-size="11" font-weight="700" text-anchor="middle">27.0 mm</text>
+  <line x1="790.7" y1="187.0" x2="790.7" y2="129.0" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="1019.3" y1="187.0" x2="1019.3" y2="129.0" stroke="#f59e0b" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="794.7" y1="134.0" x2="1015.3" y2="134.0" stroke="#f59e0b" stroke-width="1.3" marker-start="url(#arr-amber-s)" marker-end="url(#arr-amber-e)"/>
+  <rect x="871.0" y="125.0" width="68.0" height="18" rx="3" fill="#0f172a" stroke="#f59e0b" stroke-width="0.9"/>
+  <text x="905.0" y="138.0" fill="#f59e0b" font-family="'Segoe UI', Consolas, sans-serif" font-size="10" font-weight="700" text-anchor="middle">22.86 mm</text>
+  <line x1="1040.0" y1="145.0" x2="1077.0" y2="145.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="1040.0" y1="545.0" x2="1077.0" y2="545.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="1072.0" y1="149.0" x2="1072.0" y2="541.0" stroke="#38bdf8" stroke-width="1.3" marker-start="url(#arr-cyan-s)" marker-end="url(#arr-cyan-e)"/>
+  <g transform="translate(1072.0, 345.0) rotate(-90)"><rect x="-32.0" y="-9" width="64.0" height="18" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="0.9"/><text x="0" y="4" fill="#38bdf8" font-family="'Segoe UI', Consolas, sans-serif" font-size="11" font-weight="700" text-anchor="middle">40.0 mm</text></g>
+
+  <!-- ==================== VIEW 3: STACKED SIDE ELEVATION ==================== -->
+  <text x="38" y="514" fill="#e2e8f0" font-family="'Segoe UI', Arial, sans-serif" font-size="12.5" font-weight="700">3. STACKED ASSEMBLY — SIDE PROFILE (42.0 &#x00D7; 19.0 mm)</text>
+
+  <!-- Bottom Carrier Board PCB (1.6 mm thick) -->
+  <rect x="125.0" y="704.0" width="400.0" height="16.0" rx="1.5" fill="#1c2128" stroke="#2dd4bf" stroke-width="1.6"/>
+  <!-- 2x8P Board-to-Board Header Stack (drawn behind USB-C foreground cut) -->
+  <rect x="152.0" y="619.0" width="208" height="85" rx="2" fill="#111827" stroke="#64748b" stroke-width="1" opacity="0.88"/>
+  <g>
+    <rect x="165.0" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+    <rect x="190.4" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+    <rect x="215.8" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+    <rect x="241.2" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+    <rect x="266.6" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+    <rect x="292.0" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+    <rect x="317.4" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+    <rect x="342.8" y="619.0" width="4" height="85.0" fill="#fbbf24" opacity="0.85"/>
+  </g>
+  <rect x="173.0" y="638.0" width="166" height="20" rx="3" fill="#0f172a" stroke="#475569" stroke-width="0.9"/>
+  <text x="256.0" y="652.0" fill="#e2e8f0" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="600" text-anchor="middle">2&#x00D7;8P Headers (Board-to-Board)</text>
+  <!-- USB Type-C on Carrier Left (drawn in foreground so label is crisp) -->
+  <rect x="117.0" y="672.0" width="84" height="32" rx="3" fill="#94a3b8" stroke="#e2e8f0" stroke-width="1.4"/>
+  <text x="159.0" y="692.0" fill="#0f172a" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="700" text-anchor="middle">USB-C</text>
+  <!-- 5264-4P IIC Connector on Carrier Right -->
+  <rect x="465.0" y="648.0" width="80" height="56" rx="2.5" fill="#e2e8f0" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="505.0" y="680.0" fill="#0f172a" font-family="'Segoe UI', sans-serif" font-size="9.5" font-weight="700" text-anchor="middle">5264-4P</text>
+
+  <!-- Core Board Underside SoC Shield -->
+  <rect x="370.0" y="619.0" width="88" height="28" rx="2" fill="#334155" stroke="#94a3b8" stroke-width="1"/>
+  <text x="414.0" y="636.0" fill="#e2e8f0" font-family="'Segoe UI', sans-serif" font-size="8.5" text-anchor="middle">SoC / RF</text>
+
+  <!-- Top Core Camera Board PCB (1.6 mm thick) -->
+  <rect x="125.0" y="603.0" width="400.0" height="16.0" rx="1.5" fill="#1c2128" stroke="#2dd4bf" stroke-width="1.6"/>
+  <text x="435.0" y="597.0" fill="#94a3b8" font-family="'Segoe UI', sans-serif" font-size="9.5" text-anchor="middle">Core Camera Board (1.6 mm)</text>
+
+  <!-- GC2145 Lens Barrel protruding on top -->
+  <rect x="185.0" y="569.0" width="85" height="34" rx="2" fill="#1e293b" stroke="#94a3b8" stroke-width="1.3"/>
+  <rect x="199.0" y="530.0" width="57" height="39.0" rx="3" fill="#334155" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="283.0" y="554.0" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10" font-weight="600">GC2145 Focusable Lens</text>
+
+  <!-- View 3 Engineering Dimension Lines -->
+  <line x1="199.0" y1="530.0" x2="61.0" y2="530.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="125.0" y1="720.0" x2="61.0" y2="720.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="66.0" y1="534.0" x2="66.0" y2="716.0" stroke="#38bdf8" stroke-width="1.3" marker-start="url(#arr-cyan-s)" marker-end="url(#arr-cyan-e)"/>
+  <g transform="translate(66.0, 625.0) rotate(-90)"><rect x="-36.0" y="-9" width="72.0" height="18" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="0.9"/><text x="0" y="4" fill="#38bdf8" font-family="'Segoe UI', Consolas, sans-serif" font-size="11" font-weight="700" text-anchor="middle">~19.0 mm</text></g>
+  <line x1="125.0" y1="720.0" x2="125.0" y2="745.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="545.0" y1="704.0" x2="545.0" y2="745.0" stroke="#38bdf8" stroke-width="0.9" stroke-dasharray="2.5,2.5" opacity="0.8"/>
+  <line x1="129.0" y1="740.0" x2="541.0" y2="740.0" stroke="#38bdf8" stroke-width="1.3" marker-start="url(#arr-cyan-s)" marker-end="url(#arr-cyan-e)"/>
+  <rect x="232.5" y="731.0" width="205.0" height="18" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="0.9"/>
+  <text x="335.0" y="744.0" fill="#38bdf8" font-family="'Segoe UI', Consolas, sans-serif" font-size="10" font-weight="700" text-anchor="middle">42.0 mm (Overall Assembled Length)</text>
+
+  <!-- ==================== SPECIFICATIONS LEGEND BLOCK (BOTTOM RIGHT) ==================== -->
+  <g transform="translate(716, 578)">
+    <rect x="0" y="0" width="368" height="160" rx="6" fill="#1e293b" stroke="#475569" stroke-width="1.2"/>
+    <text x="14" y="22" fill="#f8fafc" font-family="'Segoe UI', Arial, sans-serif" font-size="11.5" font-weight="700">PHYSICAL SPECIFICATIONS (ESP32-S3-CAM)</text>
+    <line x1="14" y1="30" x2="354" y2="30" stroke="#334155" stroke-width="1"/>
+    <text x="14" y="48" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600">Overall Assembled:</text>
+    <text x="138" y="48" fill="#e2e8f0" font-family="Consolas, monospace" font-size="10.5">42.0 &#x00D7; 27.0 &#x00D7; 19.0 mm</text>
+    <text x="14" y="66" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600">Core &amp; Carrier PCB:</text>
+    <text x="138" y="66" fill="#e2e8f0" font-family="Consolas, monospace" font-size="10.5">40.0 &#x00D7; 27.0 mm (t = 1.6 mm)</text>
+    <text x="14" y="84" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600">Mounting Holes:</text>
+    <text x="138" y="84" fill="#e2e8f0" font-family="Consolas, monospace" font-size="10.5">2 &#x00D7; &#x2300;4.0 mm (Pitch 8.0 mm)</text>
+    <text x="14" y="102" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600">Stack Headers:</text>
+    <text x="138" y="102" fill="#e2e8f0" font-family="Consolas, monospace" font-size="10.5">2 &#x00D7; 8P, 2.54 mm (Row 22.86 mm)</text>
+    <text x="14" y="120" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600">USB / IIC Ports:</text>
+    <text x="138" y="120" fill="#e2e8f0" font-family="'Segoe UI', sans-serif" font-size="10">USB-C (CH340) + 5264-4P (I2C 0x52)</text>
+    <text x="14" y="138" fill="#38bdf8" font-family="'Segoe UI', sans-serif" font-size="10.5" font-weight="600">Buttons:</text>
+    <text x="138" y="138" fill="#e2e8f0" font-family="'Segoe UI', sans-serif" font-size="10">Side-actuated RST &amp; USER / BOOT (IO0)</text>
+    <text x="14" y="153" fill="#94a3b8" font-family="'Segoe UI', sans-serif" font-size="9">Note: Derived from orthographic CAD references &amp; schematics.</text>
+  </g>
+</svg>

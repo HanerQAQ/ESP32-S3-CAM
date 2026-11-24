@@ -1,0 +1,172 @@
+name: Repository CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  lint-and-test:
+    name: Code, Links & Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Check repository hygiene (no committed binaries or caches)
+        run: |
+          python - <<'EOF'
+          import sys
+          from pathlib import Path
+
+          root = Path(".").resolve()
+          disallowed_exts = {".exe", ".obj", ".o", ".pyc"}
+          violations = []
+
+          for path in root.rglob("*"):
+              if ".git" in path.parts or not path.is_file():
+                  continue
+              if path.suffix.lower() in disallowed_exts:
+                  violations.append(f"Forbidden file type: {path.relative_to(root)}")
+              if "firmware" in path.parts and path.suffix.lower() == ".bin":
+                  violations.append(f"Stray binary in firmware source: {path.relative_to(root)}")
+              size_mb = path.stat().st_size / (1024 * 1024)
+              if size_mb > 50:
+                  violations.append(f"File exceeds 50MB ({size_mb:.2f} MB): {path.relative_to(root)}")
+
+          if violations:
+              print("Repository hygiene violations found:", violations)
+              sys.exit(1)
+          print("Repository hygiene check passed.")
+          EOF
+
+      - name: Install lint and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+
+      - name: Check Python source syntax & static errors
+        run: |
+          python -m compileall -q examples/ firmware/ tools/ tests/
+          flake8 examples tools tests --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Validate JSON configuration files
+        run: |
+          python - <<'EOF'
+          import json
+          from pathlib import Path
+
+          for jf in Path(".").rglob("*.json"):
+              if "managed_components" in jf.parts or ".git" in jf.parts:
+                  continue
+              with jf.open("r", encoding="utf-8") as f:
+                  json.load(f)
+          print("All JSON files are valid!")
+          EOF
+
+      - name: Validate Arduino 1.5 library specification
+        run: |
+          python - <<'EOF'
+          from pathlib import Path
+
+          lib_dir = Path("examples/esp32_arduino/ESP32_S3_CAM")
+          props_path = lib_dir / "library.properties"
+          assert props_path.is_file(), f"Missing {props_path}"
+          required_keys = ["name", "version", "author", "maintainer", "sentence", "paragraph", "category", "url", "architectures"]
+          props = {}
+          for line in props_path.read_text(encoding="utf-8").splitlines():
+              if "=" in line and not line.startswith("#"):
+                  k, v = line.strip().split("=", 1)
+                  props[k] = v
+          for rk in required_keys:
+              assert rk in props, f"Missing required property: {rk}"
+          assert (lib_dir / "keywords.txt").is_file(), "Missing keywords.txt"
+          assert (lib_dir / "src").is_dir(), "Missing src/ directory"
+          assert (lib_dir / "examples").is_dir(), "Missing examples/ directory"
+          print("Arduino library specification validated!")
+          EOF
+
+      - name: Validate Python SDK and MicroPython packaging
+        run: |
+          python - <<'EOF'
+          from pathlib import Path
+
+          assert Path("examples/python_sdk/pyproject.toml").is_file(), "Missing examples/python_sdk/pyproject.toml"
+          assert Path("examples/python_sdk/esp32_s3_cam/__init__.py").is_file(), "Missing esp32_s3_cam/__init__.py"
+          assert Path("examples/python_sdk/esp32_s3_cam/driver.py").is_file(), "Missing esp32_s3_cam/driver.py"
+          assert Path("examples/esp32_micropython/lib/ESP32_S3_CAM.py").is_file(), "Missing MicroPython driver"
+          print("Python SDK & MicroPython packaging validated!")
+          EOF
+
+      - name: Run automated pytest suite
+        run: |
+          python -m pytest -v
+
+      - name: Verify relative Markdown links and HTML image references
+        run: |
+          python - <<'EOF'
+          import re
+          import sys
+          from pathlib import Path
+
+          root = Path(".").resolve()
+          md_link_re = re.compile(r'!?\[[^\]]*\]\(([^)]+)\)')
+          html_img_re = re.compile(r'<img\b[^>]*\bsrc=["\']([^"\']+)["\']', re.IGNORECASE)
+          broken = []
+          total = 0
+
+          for md in root.rglob("*.md"):
+              if ".git" in md.parts or ".github" in md.parts:
+                  continue
+              text = md.read_text(encoding="utf-8", errors="ignore")
+              targets = [m.group(1) for m in md_link_re.finditer(text)] + [m.group(1) for m in html_img_re.finditer(text)]
+              for raw_target in targets:
+                  target = raw_target.strip()
+                  if not target or target.startswith(("http://", "https://", "mailto:", "#", "ftp://")):
+                      continue
+                  clean_target = target.split("#", 1)[0].split(" ", 1)[0]
+                  if not clean_target:
+                      continue
+                  total += 1
+                  if not (md.parent / clean_target).resolve().exists():
+                      broken.append((md.relative_to(root).as_posix(), target))
+
+          print(f"Checked {total} relative documentation & image links.")
+          if broken:
+              print("Broken links found:", broken)
+              sys.exit(1)
+          print("All documentation links and image assets verified!")
+          EOF
+
+  platformio-check:
+    name: PlatformIO Arduino Driver Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PlatformIO Core
+        run: |
+          python -m pip install --upgrade pip
+          pip install platformio
+
+      - name: Compile Arduino example with ESP32_S3_CAM library
+        working-directory: examples/esp32_arduino
+        run: |
+          pio run -e cat_dog_detect

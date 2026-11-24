@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Hardware Schematics & Datasheets
+    url: https://github.com/HanerQAQ/ESP32-S3-CAM/tree/main/hardware
+    about: View PDF schematics, pinouts, and sensor datasheets before reporting hardware issues.
+  - name: Offline Vision I2C Protocol Specification (EN / 中文)
+    url: https://github.com/HanerQAQ/ESP32-S3-CAM/blob/main/docs/i2c_protocol_en.md
+    about: Read the complete 32-byte fragmented I2C packet format and JSON commands (English & Chinese).
+  - name: Community Discussions & Support / 社区讨论
+    url: https://github.com/HanerQAQ/ESP32-S3-CAM/discussions
+    about: Ask questions and discuss features with the community.

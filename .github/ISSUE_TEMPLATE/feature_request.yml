@@ -1,0 +1,27 @@
+name: Feature Request / 功能建议
+description: Suggest an idea or feature for ESP32-S3 CAM
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a feature request or enhancement idea? We would love to hear it!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Is your feature request related to a problem? / 相关背景或痛点
+      description: A clear description of the limitation or use case.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe the solution you'd like / 期望的解决方案
+      description: A clear description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Additional context or alternatives / 其他说明与替代方案
+      description: Any other context, references, or mockups.

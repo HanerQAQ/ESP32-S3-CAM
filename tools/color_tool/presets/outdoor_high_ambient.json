@@ -1,0 +1,87 @@
+{
+  "version": "1.0",
+  "format": "ColorTool_Preset",
+  "description": "Outdoor High-Ambient Lighting Preset (Direct Daylight)",
+  "colors": [
+    {
+      "name": "color1",
+      "enabled": true,
+      "swatch": "#ef233c",
+      "area_min": 150,
+      "hsv_min": [
+        172,
+        110,
+        100
+      ],
+      "hsv_max": [
+        8,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color2",
+      "enabled": true,
+      "swatch": "#2f80ed",
+      "area_min": 150,
+      "hsv_min": [
+        98,
+        100,
+        90
+      ],
+      "hsv_max": [
+        122,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color3",
+      "enabled": true,
+      "swatch": "#12b76a",
+      "area_min": 150,
+      "hsv_min": [
+        48,
+        90,
+        80
+      ],
+      "hsv_max": [
+        80,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color4",
+      "enabled": true,
+      "swatch": "#f59e0b",
+      "area_min": 150,
+      "hsv_min": [
+        18,
+        90,
+        100
+      ],
+      "hsv_max": [
+        32,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color5",
+      "enabled": true,
+      "swatch": "#8b5cf6",
+      "area_min": 150,
+      "hsv_min": [
+        128,
+        80,
+        80
+      ],
+      "hsv_max": [
+        150,
+        255,
+        255
+      ]
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "version": "1.0",
+  "format": "ColorTool_Preset",
+  "description": "Standard Factory Presets (Indoor / Robotics Competition)",
+  "colors": [
+    {
+      "name": "color1",
+      "enabled": true,
+      "swatch": "#ef233c",
+      "area_min": 120,
+      "hsv_min": [
+        170,
+        80,
+        80
+      ],
+      "hsv_max": [
+        10,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color2",
+      "enabled": true,
+      "swatch": "#2f80ed",
+      "area_min": 120,
+      "hsv_min": [
+        95,
+        70,
+        70
+      ],
+      "hsv_max": [
+        125,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color3",
+      "enabled": true,
+      "swatch": "#12b76a",
+      "area_min": 120,
+      "hsv_min": [
+        45,
+        60,
+        60
+      ],
+      "hsv_max": [
+        85,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color4",
+      "enabled": true,
+      "swatch": "#f59e0b",
+      "area_min": 120,
+      "hsv_min": [
+        15,
+        70,
+        80
+      ],
+      "hsv_max": [
+        35,
+        255,
+        255
+      ]
+    },
+    {
+      "name": "color5",
+      "enabled": true,
+      "swatch": "#8b5cf6",
+      "area_min": 120,
+      "hsv_min": [
+        125,
+        60,
+        60
+      ],
+      "hsv_max": [
+        155,
+        255,
+        255
+      ]
+    }
+  ]
+}

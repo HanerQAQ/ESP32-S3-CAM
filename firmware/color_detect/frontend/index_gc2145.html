@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32-S3 - Color Detection（颜色识别模式）</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部模式栏 - 与 ESP32P4 192.168.5.1 保持 100% 一致 */
+        #mode-bar {
+            padding: 12px 20px;
+            background: #18232e;
+            color: #ffffff;
+            font: 15px system-ui, -apple-system, sans-serif;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .mode-tag {
+            font-size: 13px;
+            background: rgba(33, 150, 243, 0.18);
+            border: 1px solid rgba(33, 150, 243, 0.35);
+            padding: 4px 12px;
+            border-radius: 4px;
+            color: #90caf9;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* 主体居中容器 */
+        .main-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 24px 16px;
+        }
+
+        /* 摄像头卡片 - 仿 Vuetify 3 v-card 风格 */
+        .camera-card {
+            width: 100%;
+            max-width: 600px;
+            background: #212121;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 视频容器 */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background: #000000;
+            aspect-ratio: 4 / 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #888888;
+            font-size: 14px;
+            gap: 10px;
+            background: #0a0a0a;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #2196f3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 底部信息与控制条 */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #212121;
+        }
+
+        .info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .camera-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.3px;
+        }
+
+        .camera-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 仿 Vuetify 图标圆形按钮 */
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            outline: none;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .icon-btn:active {
+            background: rgba(255, 255, 255, 0.28);
+            transform: scale(0.95);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* 模态弹窗 (设置面板) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s, visibility 0.25s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            width: 90%;
+            max-width: 440px;
+            background: #242424;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(20px);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #888888;
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .modal-close:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        /* 模态框控件条目 */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-group-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+
+        .val-badge {
+            font-size: 12px;
+            background: #333333;
+            color: #2196f3;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid #444444;
+        }
+
+        /* 滑块 */
+        .slider-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-bar span {
+            font-size: 12px;
+            color: #777777;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: #383838;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #2196f3;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* 下拉选择框控件 */
+        .select-styled {
+            width: 100%;
+            background: #2e2e2e;
+            color: #ffffff;
+            border: 1px solid #444444;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .select-styled:focus {
+            border-color: #2196f3;
+        }
+
+        .select-styled option {
+            background: #242424;
+            color: #ffffff;
+        }
+
+        /* iOS 风格 Switch 开关 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #383838;
+            transition: .25s;
+            border-radius: 24px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #ffffff;
+            transition: .25s;
+            border-radius: 50%;
+        }
+
+        input:checked + .switch-slider {
+            background-color: #2196f3;
+        }
+
+        input:checked + .switch-slider:before {
+            transform: translateX(20px);
+        }
+
+        .modal-footer {
+            padding: 12px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-confirm {
+            background: #2196f3;
+            color: #ffffff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-confirm:hover {
+            background: #1976d2;
+        }
+
+        /* Toast 提示 */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(33, 33, 33, 0.95);
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 14px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <div id="mode-bar" role="status">
+        <span>ESP32-S3-CAM</span>
+        <span class="mode-tag">Color Detection（颜色识别模式）</span>
+    </div>
+
+    <!-- 主展示区 -->
+    <main class="main-container">
+        <div class="camera-card">
+            <!-- 视频/抓拍图像显示区 -->
+            <div class="video-wrapper">
+                <div class="video-placeholder" id="placeholder">
+                    <div class="spinner"></div>
+                    <span>正在连接视频流...</span>
+                </div>
+                <img id="stream" src="" alt="Camera Stream" crossorigin="anonymous" class="hidden">
+            </div>
+
+            <!-- 卡片底部状态栏与操作按钮 -->
+            <div class="card-footer">
+                <div class="info-col">
+                    <div class="camera-title">Camera #0</div>
+                    <div class="camera-subtitle" id="camera-sub">JPEG 320x240 (Quality: 10)</div>
+                </div>
+
+                <div class="btn-group">
+                    <!-- 设置按钮 (齿轮图标) -->
+                    <button type="button" class="icon-btn" id="btn-settings" aria-label="Settings" title="设置">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                        </svg>
+                    </button>
+
+                    <!-- 单帧抓拍按钮 (相机图标) -->
+                    <button type="button" class="icon-btn" id="btn-snapshot" aria-label="Download Frame" title="拍摄抓拍">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20,4H16.83L15,2H9L7.17,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,18H4V6H8.05L9.88,4H14.12L15.95,6H20V18M12,7A5,5 0 0,0 7,12A5,5 0 0,0 12,17A5,5 0 0,0 17,12A5,5 0 0,0 12,7M12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15Z"/>
+                        </svg>
+                    </button>
+
+                    <!-- 推流开关按钮 (播放/暂停图标) -->
+                    <button type="button" class="icon-btn" id="btn-stream-toggle" aria-label="Toggle Stream" title="播放/暂停推流">
+                        <svg id="icon-pause" viewBox="0 0 24 24">
+                            <path d="M14,19H18V5H14M6,19H10V5H6V19Z"/>
+                        </svg>
+                        <svg id="icon-play" viewBox="0 0 24 24" class="hidden">
+                            <path d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 设置弹窗 (Settings Dialog) -->
+    <div class="modal-overlay" id="modal-settings">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span class="modal-title">Camera Settings</span>
+                <button class="modal-close" id="btn-modal-close">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- 分辨率配置 (保留5种支持分辨率) -->
+                                <!-- 分辨率状态展示 (随底层程序配置动态同步) -->
+                <div class="setting-row">
+                    <span class="setting-label">Resolution (分辨率)</span>
+                    <span class="val-badge" id="framesize-val">320x240</span>
+                </div>
+
+                <!-- 压缩质量滑块 -->
+                <div class="setting-group">
+                    <div class="setting-group-header">
+                        <span>Quality (画质压缩比: 4最高 ~ 63最低)</span>
+                        <span class="val-badge" id="quality-val">10</span>
+                    </div>
+                    <div class="slider-bar">
+                        <span>最高 (4)</span>
+                        <input type="range" id="quality" min="4" max="63" value="10" class="ctrl-action">
+                        <span>最低 (63)</span>
+                    </div>
+                </div>
+
+                <!-- 水平镜像 -->
+                <div class="setting-row">
+                    <span class="setting-label">H-Mirror (水平镜像)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="hmirror" class="ctrl-action">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+
+                <!-- 垂直翻转 -->
+                <div class="setting-row">
+                    <span class="setting-label">V-Flip (垂直翻转)</span>
+                    <label class="switch">
+                        <input type="checkbox" id="vflip" class="ctrl-action">
+                        <span class="switch-slider"></span>
+                    </label>
+                </div>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-confirm" id="btn-modal-confirm">完成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 消息 -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const baseHost = document.location.origin;
+    const streamUrl = `${document.location.protocol}//${document.location.hostname}:81`;
+
+    let lastFrames = -1;
+    let freezeTicks = 0;
+    let isReconnecting = false;
+
+    const view = document.getElementById('stream');
+    const placeholder = document.getElementById('placeholder');
+    const cameraSub = document.getElementById('camera-sub');
+    const qualityVal = document.getElementById('quality-val');
+    const framesizeVal = document.getElementById('framesize-val');
+    const framesizeSelect = document.getElementById('framesize');
+
+    const btnSettings = document.getElementById('btn-settings');
+    const btnSnapshot = document.getElementById('btn-snapshot');
+    const btnStreamToggle = document.getElementById('btn-stream-toggle');
+    const iconPause = document.getElementById('icon-pause');
+    const iconPlay = document.getElementById('icon-play');
+
+    const modalSettings = document.getElementById('modal-settings');
+    const btnModalClose = document.getElementById('btn-modal-close');
+    const btnModalConfirm = document.getElementById('btn-modal-confirm');
+    const toast = document.getElementById('toast');
+
+    const FRAMESIZE_MAP = {
+        4: '240x240',
+        5: '320x240',
+        6: '400x296',
+        7: '480x320',
+        8: '640x480',
+        9: '800x600'
+    };
+
+    let isStreaming = false;
+    let currentQuality = 10;
+    let currentFramesize = '320x240';
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    let currentFps = null;
+    function updateSubtitle(q, res, fps) {
+        if (q !== undefined && q !== null && q !== '') {
+            currentQuality = q;
+        }
+        if (res) {
+            currentFramesize = res;
+        } else if (view.naturalWidth && view.naturalHeight) {
+            currentFramesize = `${view.naturalWidth}x${view.naturalHeight}`;
+        }
+        if (fps !== undefined && fps !== null) {
+            currentFps = fps;
+        }
+        const fpsStr = (currentFps !== null && currentFps > 0) ? ` | ${currentFps} FPS` : '';
+        cameraSub.textContent = `JPEG ${currentFramesize} (Quality: ${currentQuality})${fpsStr}`;
+    }
+
+    // 控制命令分发
+    function sendControl(id, val) {
+        return fetch(`${baseHost}/control?var=${id}&val=${val}`)
+            .then(res => {
+                if (!res.ok) console.warn(`Control ${id} failed:`, res.status);
+            })
+            .catch(err => console.warn('Control error:', err));
+    }
+
+    // 绑定设置变更事件
+    document.querySelectorAll('.ctrl-action').forEach(el => {
+        el.onchange = function () {
+            let val;
+            if (el.type === 'checkbox') {
+                val = el.checked ? 1 : 0;
+            } else {
+                val = el.value;
+                if (el.id === 'quality') {
+                    currentQuality = val;
+                    qualityVal.textContent = val;
+                    updateSubtitle(val, currentFramesize);
+                    sendControl(el.id, val).then(() => {
+                        const qNum = Number(val);
+                        const desc = qNum <= 10 ? '超清' : (qNum <= 25 ? '高清' : (qNum <= 45 ? '均衡' : '极速'));
+                        showToast(`画质已设为 ${val} (${desc})`);
+                    });
+                    return;
+                } else if (el.id === 'framesize') {
+                    const resStr = FRAMESIZE_MAP[val] || val;
+                    if (framesizeVal) framesizeVal.textContent = resStr;
+                    updateSubtitle(currentQuality, resStr);
+                    sendControl(el.id, val).then(() => {
+                        showToast(`已切换分辨率为 ${resStr}`);
+                        if (isStreaming) {
+                            setTimeout(startStream, 400);
+                        }
+                    });
+                    return;
+                }
+            }
+            sendControl(el.id, val);
+        };
+
+        if (el.type === 'range') {
+            el.oninput = function () {
+                if (el.id === 'quality') {
+                    currentQuality = el.value;
+                    qualityVal.textContent = el.value;
+                    updateSubtitle(el.value, currentFramesize);
+                }
+            };
+        }
+    });
+
+    // 初始状态拉取
+    fetch(`${baseHost}/status`)
+        .then(res => res.json())
+        .then(state => {
+            if (state.framesize !== undefined && FRAMESIZE_MAP[state.framesize]) {
+                currentFramesize = FRAMESIZE_MAP[state.framesize];
+                if (framesizeVal) framesizeVal.textContent = currentFramesize;
+                if (framesizeSelect) framesizeSelect.value = state.framesize;
+            }
+            if (state.quality !== undefined && state.quality > 0) {
+                currentQuality = state.quality;
+                if (qualityVal) qualityVal.textContent = currentQuality;
+            }
+            updateSubtitle(currentQuality, currentFramesize);
+
+            document.querySelectorAll('.ctrl-action').forEach(el => {
+                if (state[el.id] !== undefined) {
+                    if (el.type === 'checkbox') {
+                        el.checked = !!Number(state[el.id]);
+                    } else {
+                        el.value = state[el.id];
+                        if (el.id === 'quality') {
+                            qualityVal.textContent = state[el.id];
+                        } else if (el.id === 'framesize' && FRAMESIZE_MAP[state[el.id]]) {
+                            if (framesizeVal) framesizeVal.textContent = FRAMESIZE_MAP[state[el.id]];
+                        }
+                    }
+                }
+            });
+        })
+        .catch(err => console.warn('Fetch status error:', err));
+
+    // 推流控制 (平滑无闪烁模式)
+    function startStream() {
+        if (!isStreaming) {
+            isStreaming = true;
+            iconPause.classList.remove('hidden');
+            iconPlay.classList.add('hidden');
+            btnStreamToggle.setAttribute('title', '暂停推流');
+        }
+        view.src = `${streamUrl}/stream?_t=${Date.now()}`;
+        view.onload = function () {
+            placeholder.classList.add('hidden');
+            view.classList.remove('hidden');
+            if (view.naturalWidth && view.naturalHeight) {
+                const actualRes = `${view.naturalWidth}x${view.naturalHeight}`;
+                if (framesizeVal) framesizeVal.textContent = actualRes;
+                updateSubtitle(currentQuality, actualRes);
+            } else {
+                updateSubtitle(currentQuality, currentFramesize);
+            }
+        };
+        view.onerror = function () {
+            if (isStreaming && !isReconnecting) {
+                isReconnecting = true;
+                console.warn('Stream interrupted, smoothly reconnecting in 1.5s...');
+                setTimeout(() => {
+                    if (isStreaming) {
+                        // 平滑重连，不置空 view.src 避免白屏闪烁
+                        view.src = `${streamUrl}/stream?_t=${Date.now()}`;
+                    }
+                    isReconnecting = false;
+                }, 1500);
+            }
+        };
+    }
+
+    function stopStream() {
+        isStreaming = false;
+        window.stop();
+        view.src = '';
+        view.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+        iconPause.classList.add('hidden');
+        iconPlay.classList.remove('hidden');
+        btnStreamToggle.setAttribute('title', '开始推流');
+    }
+
+    btnStreamToggle.onclick = () => {
+        if (isStreaming) {
+            stopStream();
+            showToast('推流已停止');
+        } else {
+            startStream();
+            showToast('实时推流已启动');
+        }
+    };
+
+    // 定时状态拉取与实时 FPS 计算展示 (纯监控，不主动打断或重置视频流)
+    setInterval(() => {
+        fetch(`${baseHost}/status`)
+            .then(res => res.json())
+            .then(state => {
+                if (state.stream_frames !== undefined && isStreaming) {
+                    if (lastFrames >= 0 && state.stream_frames >= lastFrames) {
+                        const fps = Math.round((state.stream_frames - lastFrames) / 1.5);
+                        updateSubtitle(currentQuality, currentFramesize, fps);
+                    }
+                    lastFrames = state.stream_frames;
+                }
+            })
+            .catch(() => {});
+    }, 1500);
+
+    btnSnapshot.onclick = () => {
+        const captureUrl = `${baseHost}/capture?_cb=${Date.now()}`;
+        const a = document.createElement('a');
+        a.href = captureUrl;
+        a.download = `camera_0_${Date.now()}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('正在下载当前单帧画面...');
+    };
+
+    // 弹窗控制
+    btnSettings.onclick = () => {
+        modalSettings.classList.add('active');
+    };
+
+    const closeModal = () => modalSettings.classList.remove('active');
+    btnModalClose.onclick = closeModal;
+    btnModalConfirm.onclick = closeModal;
+    modalSettings.onclick = (e) => {
+        if (e.target === modalSettings) closeModal();
+    };
+
+    // 启动即播放推流
+    startStream();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('settings') === '1') {
+        setTimeout(() => modalSettings.classList.add('active'), 200);
+    }
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# ESP-IDF build & configuration outputs
+firmware/*/build/
+firmware/*/managed_components/
+firmware/*/sdkconfig
+firmware/*/sdkconfig.old
+firmware/*/dependencies.lock
+
+# Python & ColorTool build outputs
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+tools/color_tool/build/
+tools/color_tool/dist/
+*.exe
+crash.log
+
+# Arduino & PlatformIO
+.pio/
+*.hex
+*.elf
+
+# IDE & OS metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

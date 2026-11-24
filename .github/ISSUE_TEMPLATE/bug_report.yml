@@ -1,0 +1,57 @@
+name: Bug Report / 问题反馈
+description: Report an issue or bug with ESP32-S3 CAM firmware, SDK examples, or ColorTool
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue! Please provide as much detail as possible so we can reproduce and fix it quickly.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component / 受影响组件
+      options:
+        - "Firmware (ESP-IDF v6.1)"
+        - "Prebuilt Firmware (.bin)"
+        - "Arduino Library (examples/esp32_arduino)"
+        - "MicroPython Driver (examples/esp32_micropython)"
+        - "STM32 HAL Driver (examples/stm32_hal)"
+        - "Raspberry Pi / Jetson Orin Python SDK"
+        - "ColorTool Desktop Studio (tools/color_tool)"
+        - "Hardware / Schematic"
+        - "Documentation / Protocol Spec"
+    validations:
+      required: true
+  - type: input
+    id: hardware-env
+    attributes:
+      label: Hardware & Environment / 硬件环境
+      description: "Host board (e.g. ESP32-WROOM-32, STM32F407, Raspberry Pi 4), power supply voltage/current, etc."
+      placeholder: "e.g., ESP32 Dev Module, 5V 2A external adapter, Type-C cable"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of the Bug / 问题描述
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to Reproduce / 复现步骤
+      description: Exact steps to reproduce the behavior.
+      placeholder: |
+        1. Flash prebuilt_firmware/color_detect.bin at 0x0
+        2. Connect module to host via I2C (SDA=47, SCL=48)
+        3. Run example script ...
+        4. See error ...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Serial Logs / Error Output / 日志输出
+      description: Copy and paste relevant UART logs or stack traces here.
+      render: shell

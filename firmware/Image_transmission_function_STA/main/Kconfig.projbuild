@@ -1,0 +1,20 @@
+menu "ESP32-S3-CAM Wi-Fi Provisioning"
+
+    config EXAMPLE_WIFI_AP_CHANNEL
+        int "SoftAP provisioning channel (2.4 GHz)"
+        default 1
+        range 1 13
+        help
+            Fixed 2.4 GHz channel for the SoftAP provisioning hotspot.
+            Channel 1 keeps boot deterministic and matches the P4C5/S3 reference.
+            When the STA connects, the SoftAP follows the router channel so the
+            single-radio S3 can run APSTA on one shared channel.
+
+    config EXAMPLE_WIFI_AP_MAX_CONNECTIONS
+        int "Wi-Fi AP max connections"
+        default 4
+        range 1 10
+        help
+            Maximum number of stations allowed to connect to the SoftAP.
+
+endmenu
