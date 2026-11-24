@@ -37,13 +37,15 @@ This folder contains lightweight PDF technical references for the **ESP32-S3-CAM
 
 | Parameter / 规格参数 | Value / 数值 | Notes / 备注 |
 | :--- | :--- | :--- |
-| **Overall Assembled / 整机堆叠尺寸** | `42.0 mm × 27.0 mm × 19.0 mm` | Core + Carrier stacked (incl. IIC connector & lens) / 含底板、镜头与 IIC 端子 |
-| **Core & Carrier PCB / 单板 PCB 尺寸** | `40.0 mm × 27.0 mm` | PCB thickness: `1.6 mm` / 双层板厚 `1.6 mm` |
-| **Mounting Holes / 底板安装定位孔** | `2 × ⌀ 4.0 mm` | Vertical pitch `8.0 mm`, `10.0 mm` from right edge / 竖排双孔间距 `8.0 mm` |
-| **Board-to-Board Headers / 板间排针排母** | `2 × 8P` (`2.54 mm` pitch) | Row-to-row spacing `22.86 mm` (`0.9"`) / 双排间距 `22.86 mm` |
+| **Overall Assembled / 整机堆叠尺寸** | `27.0 mm × 42.0 mm × 19.0 mm` (`W × H × D`) | Core + Carrier stacked (incl. `5264-4P` IIC & lens) / 含底板、镜头与 IIC 端子 |
+| **Core & Carrier PCB / 单板 PCB 尺寸** | `27.0 mm × 40.0 mm` | PCB thickness: `1.6 mm` each / 双板厚各 `1.6 mm` |
+| **Mounting Holes / 底板安装定位孔** | `2 × ⌀ 4.00 mm` | Horizontal pitch `8.00 mm` in lower Carrier Back / 底板背面下部横向双孔，孔距 `8.00 mm` |
+| **Board-to-Board Package / 板间封装排针** | `DIP-16` (`2 × 8P`, `2.54 mm` pitch) | Row-to-row spacing `22.86 mm` (`0.9"`) / 双排间距 `22.86 mm` |
+| **Camera Optics / 摄像头参数** | `GC2145 2MP` (`FOV 123°`) | `24-Pin 0.5 mm` FPC (DVP interface) |
 | **I2C Connector / I2C 通讯端子** | `4-Pin 5264-4P` | Keyed 4-pin header (`5V`, `GND`, `SCL=IO48`, `SDA=IO47`) |
 | **USB Interface / USB 接口** | USB Type-C Receptacle | Onboard CH340 USB-UART bridge |
-| **Operating Voltage / 工作电压** | `DC 5.0 V` | Recommended supply current `≥ 2.0 A` |
-| **Operating Temperature / 工作温度** | `-20 °C ~ +70 °C` | Commercial industrial grade |
+| **Weight / 整机重量** | `~14 g` | Stacked Core + Carrier module / 含核心板与底板 |
+| **Operating Voltage / 工作电压** | `DC 5.0 V` (`4.75 ~ 5.25 V`) | Recommended supply current `≥ 2.0 A` |
+| **Operating Temperature / 工作温度** | `-20 °C ~ +70 °C` | Storage: `-40 °C ~ +125 °C` (`< 90% RH`) |
 
 > **3D CAD Models (`.stp` / `.stl`)**: To avoid bloating Git history (~69 MB total), 3D mechanical CAD files (`ESP32S3-Cam.stp` and `ESP32–Cam电路板.stl`) are omitted here and can be attached to **GitHub Releases**.
